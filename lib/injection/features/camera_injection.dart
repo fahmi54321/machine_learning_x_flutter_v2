@@ -1,10 +1,10 @@
-import 'package:machine_learning_x_flutter/data/datasources/camera/camera_datasource.dart';
-import 'package:machine_learning_x_flutter/data/datasources/camera/camera_datasource_impl.dart';
-import 'package:machine_learning_x_flutter/data/repositories/camera/camera_repository_impl.dart';
-import 'package:machine_learning_x_flutter/domain/repositories/camera/camera_repository.dart';
-import 'package:machine_learning_x_flutter/domain/usecases/camera/camera_usecase_impl.dart';
+import 'package:machine_learning_x_flutter/features/camera/data/datasources/camera_datasource.dart';
+import 'package:machine_learning_x_flutter/features/camera/data/datasources/camera_datasource_impl.dart';
+import 'package:machine_learning_x_flutter/features/camera/data/repositories/camera_repository_impl.dart';
+import 'package:machine_learning_x_flutter/features/camera/domain/repositories/camera_repository.dart';
+import 'package:machine_learning_x_flutter/features/camera/domain/usecases/camera_usecase_impl.dart';
 import 'package:machine_learning_x_flutter/injection/injection.dart';
-import 'package:machine_learning_x_flutter/presentation/usecases/camera/camera_usecase.dart';
+import 'package:machine_learning_x_flutter/features/camera/domain/usecases/camera_usecase.dart';
 
 void initCameraFeature() {
   // USECASE

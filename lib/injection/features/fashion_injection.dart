@@ -1,10 +1,10 @@
-import 'package:machine_learning_x_flutter/data/datasources/fashion/fashion_datasource.dart';
-import 'package:machine_learning_x_flutter/data/datasources/fashion/fashion_datasource_impl.dart';
-import 'package:machine_learning_x_flutter/data/repositories/fashion/fashion_respository_impl.dart';
-import 'package:machine_learning_x_flutter/domain/repositories/fashion/fashion_repository.dart';
-import 'package:machine_learning_x_flutter/domain/usecases/fashion/fashion_usecase_impl.dart';
-import 'package:machine_learning_x_flutter/presentation/pages/fashion/provider/fashion_predictor_provider.dart';
-import 'package:machine_learning_x_flutter/presentation/usecases/fashion/fashion_usecase.dart';
+import 'package:machine_learning_x_flutter/features/fashion/data/datasources/fashion_datasource.dart';
+import 'package:machine_learning_x_flutter/features/fashion/data/datasources/fashion_datasource_impl.dart';
+import 'package:machine_learning_x_flutter/features/fashion/data/repositories/fashion_respository_impl.dart';
+import 'package:machine_learning_x_flutter/features/fashion/domain/repositories/fashion_repository.dart';
+import 'package:machine_learning_x_flutter/features/fashion/domain/usecase/fashion_usecase_impl.dart';
+import 'package:machine_learning_x_flutter/features/fashion/presentation/pages/provider/fashion_predictor_provider.dart';
+import 'package:machine_learning_x_flutter/features/fashion/domain/usecase/fashion_usecase.dart';
 import 'package:machine_learning_x_flutter/injection/injection.dart';
 
 void initFashionFeature() {

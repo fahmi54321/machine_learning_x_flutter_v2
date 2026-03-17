@@ -1,12 +1,12 @@
-import 'package:machine_learning_x_flutter/data/datasources/startup/startup_datasource.dart';
-import 'package:machine_learning_x_flutter/data/datasources/startup/startup_dataspurce_impl.dart';
-import 'package:machine_learning_x_flutter/data/repositories/startup/startup_repositories_impl.dart';
-import 'package:machine_learning_x_flutter/domain/repositories/startup/startup_repository.dart';
-import 'package:machine_learning_x_flutter/domain/usecases/startup/startup_usecase_impl.dart';
-import 'package:machine_learning_x_flutter/domain/usecases/startup/startup/validation_startup_usecase_impl.dart';
-import 'package:machine_learning_x_flutter/presentation/pages/startup/provider/startup_provider.dart';
-import 'package:machine_learning_x_flutter/presentation/usecases/startup/startup_usecase.dart';
-import 'package:machine_learning_x_flutter/presentation/usecases/startup/validation/validation_startup_usecase.dart';
+import 'package:machine_learning_x_flutter/features/startup/data/datasources/startup_datasource.dart';
+import 'package:machine_learning_x_flutter/features/startup/data/datasources/startup_datasource_impl.dart';
+import 'package:machine_learning_x_flutter/features/startup/data/repositories/startup_repositories_impl.dart';
+import 'package:machine_learning_x_flutter/features/startup/domain/repositories/startup_repository.dart';
+import 'package:machine_learning_x_flutter/features/startup/domain/usecases/startup_usecase_impl.dart';
+import 'package:machine_learning_x_flutter/features/startup/domain/usecases/validation/validation_startup_usecase_impl.dart';
+import 'package:machine_learning_x_flutter/features/startup/presentation/pages/provider/startup_provider.dart';
+import 'package:machine_learning_x_flutter/features/startup/domain/usecases/startup_usecase.dart';
+import 'package:machine_learning_x_flutter/features/startup/domain/usecases/validation/validation_startup_usecase.dart';
 import 'package:machine_learning_x_flutter/injection/injection.dart';
 
 void initStartupFeature() {

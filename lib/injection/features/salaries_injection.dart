@@ -1,12 +1,12 @@
-import 'package:machine_learning_x_flutter/data/datasources/salaries/salaries_datasources.dart';
-import 'package:machine_learning_x_flutter/data/datasources/salaries/salaries_datasources_impl.dart';
-import 'package:machine_learning_x_flutter/data/repositories/salaries/salaries_repositories_impl.dart';
-import 'package:machine_learning_x_flutter/domain/repositories/salaries/salaries_repositories.dart';
-import 'package:machine_learning_x_flutter/domain/usecases/salaries/salaries_usecase_impl.dart';
-import 'package:machine_learning_x_flutter/domain/usecases/salaries/validation/validation_salaries_usecase_impl.dart';
-import 'package:machine_learning_x_flutter/presentation/pages/salaries/cubit/predict_cubit.dart';
-import 'package:machine_learning_x_flutter/presentation/usecases/salaries/salaries_usecase.dart';
-import 'package:machine_learning_x_flutter/presentation/usecases/salaries/validation/validation_salaries_usecase.dart';
+import 'package:machine_learning_x_flutter/features/salaries/data/datasources/salaries_datasources.dart';
+import 'package:machine_learning_x_flutter/features/salaries/data/datasources/salaries_datasources_impl.dart';
+import 'package:machine_learning_x_flutter/features/salaries/data/repositories/salaries_repositories_impl.dart';
+import 'package:machine_learning_x_flutter/features/salaries/domain/repositories/salaries_repositories.dart';
+import 'package:machine_learning_x_flutter/features/salaries/domain/usecases/salaries_usecase_impl.dart';
+import 'package:machine_learning_x_flutter/features/salaries/domain/usecases/validation/validation_salaries_usecase_impl.dart';
+import 'package:machine_learning_x_flutter/features/salaries/presentation/pages/cubit/predict_cubit.dart';
+import 'package:machine_learning_x_flutter/features/salaries/domain/usecases/salaries_usecase.dart';
+import 'package:machine_learning_x_flutter/features/salaries/domain/usecases/validation/validation_salaries_usecase.dart';
 import 'package:machine_learning_x_flutter/injection/injection.dart';
 
 void initSalariesFeature() {

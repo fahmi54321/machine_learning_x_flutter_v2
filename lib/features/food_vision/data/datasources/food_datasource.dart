@@ -1,0 +1,10 @@
+import 'package:dio/dio.dart';
+import 'package:machine_learning_x_flutter/features/food_vision/data/models/food_model.dart';
+
+abstract class FoodDatasource {
+  Future<FoodModel> predict({
+    required String imagePath,
+    required String trueLabel,
+    required CancelToken? cancelToken,
+  });
+}
