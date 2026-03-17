@@ -110,3 +110,18 @@ Struktur ini dirancang untuk:
 - menjaga konsistensi kode
 - mempermudah testing
 - mempercepat onboarding developer baru
+
+## Screenshots
+
+Berikut beberapa tampilan aplikasi:
+
+<p align="center">
+  <img src="screenshots/fashion.png" width="200"/>
+  <img src="screenshots/food.png" width="200"/>
+  <img src="screenshots/insurance.png" width="200"/>
+  <img src="screenshots/salary.png" width="200"/>
+</p>
+
+<p align="center">
+  <img src="screenshots/startup.jpg" width="200"/>
+</p>
