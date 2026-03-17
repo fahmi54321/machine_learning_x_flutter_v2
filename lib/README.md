@@ -162,3 +162,18 @@ Struktur ini dirancang untuk:
 - mengurangi kompleksitas kode
 - mempermudah testing
 - menjaga konsistensi antar developer
+
+## Screenshots
+
+Berikut beberapa tampilan aplikasi:
+
+<p align="center">
+  <img src="screenshoots/fashion.png" width="200"/>
+  <img src="screenshoots/food.png" width="200"/>
+  <img src="screenshoots/insurance.png" width="200"/>
+  <img src="screenshoots/salary.png" width="200"/>
+</p>
+
+<p align="center">
+  <img src="screenshoots/startup.jpg" width="200"/>
+</p>
