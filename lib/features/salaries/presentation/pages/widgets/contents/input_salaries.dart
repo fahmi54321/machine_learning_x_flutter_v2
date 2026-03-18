@@ -20,7 +20,7 @@ class InputSalaries extends StatelessWidget {
                       .state
                       .yearsOfExperience
                       .validationStatus ==
-                  ValidationStatus.error
+                  ValidationStatus.notValid
               ? 'Tidak boleh kosong'
               : null,
         ),

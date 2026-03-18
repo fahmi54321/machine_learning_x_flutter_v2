@@ -57,14 +57,13 @@ class StartupProvider extends BaseStateProvider<StartupState> {
   }
 
   bool get isFormValid {
-    if (state.rdForm.validationStatus != ValidationStatus.success) {
+    if (state.rdForm.validationStatus != ValidationStatus.valid) {
       _handleAlert('Rd tidak boleh kosong');
       return false;
-    } else if (state.adminForm.validationStatus != ValidationStatus.success) {
+    } else if (state.adminForm.validationStatus != ValidationStatus.valid) {
       _handleAlert('Admin tidak boleh kosong');
       return false;
-    } else if (state.marketingForm.validationStatus !=
-        ValidationStatus.success) {
+    } else if (state.marketingForm.validationStatus != ValidationStatus.valid) {
       _handleAlert('Marketing tidak boleh kosong');
       return false;
     } else {

@@ -10,18 +10,18 @@ class InputsInsurance extends StatelessWidget {
   Widget build(BuildContext context) {
     final errorTextAge =
         context.watch<InsuranceProvider>().state.age.validationStatus ==
-            ValidationStatus.error
+            ValidationStatus.notValid
         ? 'Tidak boleh kosong'
         : null;
     debugPrint('errorTextAge: $errorTextAge');
     final errorTextBmi =
         context.watch<InsuranceProvider>().state.bmi.validationStatus ==
-            ValidationStatus.error
+            ValidationStatus.notValid
         ? 'Tidak boleh kosong'
         : null;
     final errorTextChildren =
         context.watch<InsuranceProvider>().state.children.validationStatus ==
-            ValidationStatus.error
+            ValidationStatus.notValid
         ? 'Tidak boleh kosong'
         : null;
     final selectedSex = context.watch<InsuranceProvider>().state.selectedSex;

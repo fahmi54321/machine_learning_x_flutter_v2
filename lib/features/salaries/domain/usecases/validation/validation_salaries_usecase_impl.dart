@@ -6,9 +6,9 @@ class ValidationSalariesUsecaseImpl implements ValidationSalariesUsecase {
   ValidationStatus salariesValidation({required String? value}) {
     ValidationStatus currentStatus = ValidationStatus.initial;
     if (value == null || value.isEmpty) {
-      currentStatus = ValidationStatus.error;
+      currentStatus = ValidationStatus.notValid;
     } else {
-      currentStatus = ValidationStatus.success;
+      currentStatus = ValidationStatus.valid;
     }
 
     return currentStatus;

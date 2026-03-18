@@ -56,13 +56,13 @@ class InsuranceProvider extends BaseStateProvider<InsuranceState> {
   }
 
   bool get isValid {
-    if (state.age.validationStatus != ValidationStatus.success) {
+    if (state.age.validationStatus != ValidationStatus.valid) {
       _handleAlert('Age tidak boleh kosong');
       return false;
-    } else if (state.bmi.validationStatus != ValidationStatus.success) {
+    } else if (state.bmi.validationStatus != ValidationStatus.valid) {
       _handleAlert('bmi tidak boleh kosong');
       return false;
-    } else if (state.children.validationStatus != ValidationStatus.success) {
+    } else if (state.children.validationStatus != ValidationStatus.valid) {
       _handleAlert('children tidak boleh kosong');
       return false;
     } else {

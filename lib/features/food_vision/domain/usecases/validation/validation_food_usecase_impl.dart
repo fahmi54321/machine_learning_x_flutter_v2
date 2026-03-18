@@ -6,9 +6,9 @@ class ValidationFoodUsecaseImpl implements ValidationFoodUsecase {
   ValidationStatus trueLabelValidation({required String? value}) {
     ValidationStatus status = ValidationStatus.initial;
     if (value == null || value.isEmpty) {
-      status = ValidationStatus.error;
+      status = ValidationStatus.notValid;
     } else {
-      status = ValidationStatus.success;
+      status = ValidationStatus.valid;
     }
 
     return status;

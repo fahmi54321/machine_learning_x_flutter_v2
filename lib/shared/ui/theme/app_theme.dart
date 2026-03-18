@@ -173,6 +173,10 @@ class AppTheme {
           bgImageColor: Color(0xff00c6ff),
           transparentColor: Colors.transparent,
           white54Color: Colors.white54,
+          greenAccentColor: Colors.greenAccent,
+          blueAccentColor: Colors.blueAccent,
+          redAccentColor: Colors.redAccent,
+          white70Color: Colors.white70,
         ),
       ],
     );

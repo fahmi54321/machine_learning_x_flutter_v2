@@ -35,7 +35,7 @@ class PredictCubit extends BaseStateCubit<PredictState> {
   }
 
   bool get isFormValid {
-    if (state.yearsOfExperience.validationStatus == ValidationStatus.success) {
+    if (state.yearsOfExperience.validationStatus == ValidationStatus.valid) {
       return true;
     } else {
       _handleAlert('Years of Experience tidak boleh kosong');

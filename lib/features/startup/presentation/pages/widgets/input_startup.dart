@@ -10,17 +10,17 @@ class InputStartup extends StatelessWidget {
   Widget build(BuildContext context) {
     final errorTextRd =
         context.watch<StartupProvider>().state.rdForm.validationStatus ==
-            ValidationStatus.error
+            ValidationStatus.notValid
         ? 'Tidak boleh kosong'
         : null;
     final errorTextAdmin =
         context.watch<StartupProvider>().state.adminForm.validationStatus ==
-            ValidationStatus.error
+            ValidationStatus.notValid
         ? 'Tidak boleh kosong'
         : null;
     final errorTextMarketing =
         context.watch<StartupProvider>().state.marketingForm.validationStatus ==
-            ValidationStatus.error
+            ValidationStatus.notValid
         ? 'Tidak boleh kosong'
         : null;
     return Wrap(

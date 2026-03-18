@@ -6,6 +6,7 @@ import 'package:machine_learning_x_flutter/injection/features/converter_injectio
 import 'package:machine_learning_x_flutter/injection/features/fashion_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/file_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/food_injection.dart';
+import 'package:machine_learning_x_flutter/injection/features/hr_salaries_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/insurance_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/permission_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/salaries_injection.dart';
@@ -27,6 +28,7 @@ Future<void> init() async {
   initInsuranceFeature();
   initFashionFeature();
   initFoodFeature();
+  initHrSalariesFeature();
 }
 
 // Note:

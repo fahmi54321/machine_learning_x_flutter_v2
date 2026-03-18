@@ -37,7 +37,7 @@ class SalariesProvider extends BaseStateProvider<SalariesState> {
   }
 
   bool get isFormValid {
-    if (state.yearsOfExperience.validationStatus == ValidationStatus.success) {
+    if (state.yearsOfExperience.validationStatus == ValidationStatus.valid) {
       return true;
     } else {
       _handleAlert('Years Of Experience tidak boleh kosong');

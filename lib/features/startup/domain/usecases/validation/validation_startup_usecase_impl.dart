@@ -6,9 +6,9 @@ class ValidationStartupUsecaseImpl implements ValidationStartupUsecase {
   ValidationStatus adminFormValidation({required String? value}) {
     ValidationStatus currentStatus = ValidationStatus.initial;
     if (value == null || value.isEmpty) {
-      currentStatus = ValidationStatus.error;
+      currentStatus = ValidationStatus.notValid;
     } else {
-      currentStatus = ValidationStatus.success;
+      currentStatus = ValidationStatus.valid;
     }
 
     return currentStatus;
@@ -18,9 +18,9 @@ class ValidationStartupUsecaseImpl implements ValidationStartupUsecase {
   ValidationStatus marketingFormValidation({required String? value}) {
     ValidationStatus currentStatus = ValidationStatus.initial;
     if (value == null || value.isEmpty) {
-      currentStatus = ValidationStatus.error;
+      currentStatus = ValidationStatus.notValid;
     } else {
-      currentStatus = ValidationStatus.success;
+      currentStatus = ValidationStatus.valid;
     }
 
     return currentStatus;
@@ -30,9 +30,9 @@ class ValidationStartupUsecaseImpl implements ValidationStartupUsecase {
   ValidationStatus rdFormValidation({required String? value}) {
     ValidationStatus currentStatus = ValidationStatus.initial;
     if (value == null || value.isEmpty) {
-      currentStatus = ValidationStatus.error;
+      currentStatus = ValidationStatus.notValid;
     } else {
-      currentStatus = ValidationStatus.success;
+      currentStatus = ValidationStatus.valid;
     }
 
     return currentStatus;

@@ -100,7 +100,7 @@ class InputFood extends StatelessWidget {
                 .state
                 .trueLabelValue
                 .validationStatus ==
-            ValidationStatus.error
+            ValidationStatus.notValid
         ? "True Label tidak boleh kosong"
         : null;
     final theme = Theme.of(context);

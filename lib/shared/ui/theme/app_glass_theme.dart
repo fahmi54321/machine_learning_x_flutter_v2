@@ -29,6 +29,11 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
   final Color white54Color;
   final Color bgImageColor;
   final Color transparentColor;
+  final Color greenAccentColor;
+  final Color blueAccentColor;
+  final Color redAccentColor;
+
+  final Color white70Color;
 
   const AppGlassTheme({
     required this.blur,
@@ -55,6 +60,10 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
     required this.white54Color,
     required this.bgImageColor,
     required this.transparentColor,
+    required this.greenAccentColor,
+    required this.blueAccentColor,
+    required this.redAccentColor,
+    required this.white70Color,
   });
 
   @override
@@ -83,6 +92,10 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
     Color? white54Color,
     Color? bgImageColor,
     Color? transparentColor,
+    Color? greenAccentColor,
+    Color? blueAccentColor,
+    Color? redAccentColor,
+    Color? white70Color,
   }) {
     return AppGlassTheme(
       blur: blur ?? this.blur,
@@ -110,6 +123,10 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
       white54Color: white54Color ?? this.white54Color,
       bgImageColor: bgImageColor ?? this.bgImageColor,
       transparentColor: transparentColor ?? this.transparentColor,
+      greenAccentColor: greenAccentColor ?? this.greenAccentColor,
+      blueAccentColor: blueAccentColor ?? this.blueAccentColor,
+      redAccentColor: redAccentColor ?? this.redAccentColor,
+      white70Color: white70Color ?? this.white70Color,
     );
   }
 
@@ -166,6 +183,14 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
         other.bgImageGradient,
         t,
       )!,
+      greenAccentColor: Color.lerp(
+        greenAccentColor,
+        other.greenAccentColor,
+        t,
+      )!,
+      blueAccentColor: Color.lerp(blueAccentColor, other.blueAccentColor, t)!,
+      redAccentColor: Color.lerp(redAccentColor, other.redAccentColor, t)!,
+      white70Color: Color.lerp(white70Color, other.white70Color, t)!,
     );
   }
 }

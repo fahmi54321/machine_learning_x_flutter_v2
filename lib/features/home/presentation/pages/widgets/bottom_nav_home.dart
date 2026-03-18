@@ -1,7 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:machine_learning_x_flutter/features/hr_salaries_predictor/presentation/pages/hr_salaries_predictor_page.dart';
 import 'package:machine_learning_x_flutter/shared/ui/theme/app_glass_theme.dart';
 import 'package:machine_learning_x_flutter/features/food_vision/presentation/pages/food_vision_page.dart';
 import 'package:provider/provider.dart';
@@ -122,9 +122,14 @@ class BottomNavHome extends StatelessWidget {
                         ),
                         _GridItem(
                           icon: Icons.psychology,
-                          label: "AI Lab",
+                          label: "Hr Salaries",
                           onTap: () {
-                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => HrSalariesPredictorWrapper(),
+                              ),
+                            );
                           },
                         ),
                         _GridItem(

@@ -6,9 +6,9 @@ class InsuranceValidationUsecaseImpl implements InsuranceValidationUsecase {
   ValidationStatus ageValidation({required String? value}) {
     ValidationStatus status = ValidationStatus.initial;
     if (value == null || value.isEmpty) {
-      status = ValidationStatus.error;
+      status = ValidationStatus.notValid;
     } else {
-      status = ValidationStatus.success;
+      status = ValidationStatus.valid;
     }
 
     return status;
@@ -18,9 +18,9 @@ class InsuranceValidationUsecaseImpl implements InsuranceValidationUsecase {
   ValidationStatus bmiValidation({required String? value}) {
     ValidationStatus status = ValidationStatus.initial;
     if (value == null || value.isEmpty) {
-      status = ValidationStatus.error;
+      status = ValidationStatus.notValid;
     } else {
-      status = ValidationStatus.success;
+      status = ValidationStatus.valid;
     }
 
     return status;
@@ -30,9 +30,9 @@ class InsuranceValidationUsecaseImpl implements InsuranceValidationUsecase {
   ValidationStatus childrenValidation({required String? value}) {
     ValidationStatus status = ValidationStatus.initial;
     if (value == null || value.isEmpty) {
-      status = ValidationStatus.error;
+      status = ValidationStatus.notValid;
     } else {
-      status = ValidationStatus.success;
+      status = ValidationStatus.valid;
     }
 
     return status;

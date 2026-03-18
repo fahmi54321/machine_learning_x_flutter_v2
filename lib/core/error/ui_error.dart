@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
-enum ErrorSource { fashion, foodVision, home, insurance, salaries, startup }
+enum ErrorSource {
+  fashion,
+  foodVision,
+  home,
+  insurance,
+  salaries,
+  startup,
+  hrSalariesPredictor,
+}
 
 class UiError {
   final ErrorSource source;
