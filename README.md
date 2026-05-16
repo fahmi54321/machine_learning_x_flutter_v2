@@ -124,4 +124,6 @@ Berikut beberapa tampilan aplikasi:
 
 <p align="center">
   <img src="screenshots/startup.jpg" width="200"/>
+  <img src="screenshots/customer_1.png" width="200"/>
+  <img src="screenshots/customer_2.png" width="200"/>
 </p>
