@@ -123,7 +123,7 @@ Berikut beberapa tampilan aplikasi:
 </p>
 
 <p align="center">
-  <img src="screenshots/startup.jpg" width="200"/>
+  <img src="screenshots/ht_salary.png" width="200"/>
   <img src="screenshots/customer_1.png" width="200"/>
   <img src="screenshots/customer_2.png" width="200"/>
 </p>
