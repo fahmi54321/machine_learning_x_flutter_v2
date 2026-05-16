@@ -17,4 +17,10 @@ abstract class ConverterUsecase {
   String doubleToFomatUSD({required double value});
 
   List<FlSpot> listHrPointToListFlSpot({required List<HrPointEntity> list});
+
+  String doubleToString({required double value});
+
+  String buySuvFormatted({required double value});
+
+  String currencyFormatted({required double value});
 }

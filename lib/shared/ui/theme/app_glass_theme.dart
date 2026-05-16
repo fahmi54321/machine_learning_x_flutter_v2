@@ -17,6 +17,7 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
   final Gradient primaryGradient;
   final Gradient secondaryGradient;
   final Gradient otherGradient;
+  final Gradient customerPredictionGradient;
   final Gradient bgImageGradient;
   final Color riskLowColor;
   final Color riskMediumColor;
@@ -34,6 +35,10 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
   final Color redAccentColor;
 
   final Color white70Color;
+  final Color blueColor;
+  final Color whiteColor;
+  final Color plotCustomerColor;
+  final Color white24Color;
 
   const AppGlassTheme({
     required this.blur,
@@ -48,6 +53,7 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
     required this.primaryGradient,
     required this.secondaryGradient,
     required this.otherGradient,
+    required this.customerPredictionGradient,
     required this.bgImageGradient,
     required this.riskLowColor,
     required this.riskMediumColor,
@@ -64,6 +70,10 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
     required this.blueAccentColor,
     required this.redAccentColor,
     required this.white70Color,
+    required this.blueColor,
+    required this.whiteColor,
+    required this.plotCustomerColor,
+    required this.white24Color,
   });
 
   @override
@@ -80,6 +90,7 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
     Gradient? primaryGradient,
     Gradient? secondaryGradient,
     Gradient? otherGradient,
+    Gradient? customerPredictionGradient,
     Gradient? bgImageGradient,
     Color? riskLowColor,
     Color? riskMediumColor,
@@ -96,6 +107,10 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
     Color? blueAccentColor,
     Color? redAccentColor,
     Color? white70Color,
+    Color? blueColor,
+    Color? whiteColor,
+    Color? plotCustomerColor,
+    Color? white24Color,
   }) {
     return AppGlassTheme(
       blur: blur ?? this.blur,
@@ -110,6 +125,8 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
       primaryGradient: primaryGradient ?? this.primaryGradient,
       secondaryGradient: secondaryGradient ?? this.secondaryGradient,
       otherGradient: otherGradient ?? this.otherGradient,
+      customerPredictionGradient:
+          customerPredictionGradient ?? this.customerPredictionGradient,
       bgImageGradient: bgImageGradient ?? this.bgImageGradient,
       riskLowColor: riskLowColor ?? this.riskLowColor,
       riskMediumColor: riskMediumColor ?? this.riskMediumColor,
@@ -127,6 +144,10 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
       blueAccentColor: blueAccentColor ?? this.blueAccentColor,
       redAccentColor: redAccentColor ?? this.redAccentColor,
       white70Color: white70Color ?? this.white70Color,
+      blueColor: blueColor ?? this.blueColor,
+      whiteColor: whiteColor ?? this.whiteColor,
+      plotCustomerColor: plotCustomerColor ?? this.plotCustomerColor,
+      white24Color: white24Color ?? this.white24Color,
     );
   }
 
@@ -178,6 +199,11 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
         t,
       )!,
       otherGradient: Gradient.lerp(otherGradient, other.otherGradient, t)!,
+      customerPredictionGradient: Gradient.lerp(
+        customerPredictionGradient,
+        other.customerPredictionGradient,
+        t,
+      )!,
       bgImageGradient: Gradient.lerp(
         bgImageGradient,
         other.bgImageGradient,
@@ -191,6 +217,14 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
       blueAccentColor: Color.lerp(blueAccentColor, other.blueAccentColor, t)!,
       redAccentColor: Color.lerp(redAccentColor, other.redAccentColor, t)!,
       white70Color: Color.lerp(white70Color, other.white70Color, t)!,
+      blueColor: Color.lerp(blueColor, other.blueColor, t)!,
+      whiteColor: Color.lerp(whiteColor, other.whiteColor, t)!,
+      plotCustomerColor: Color.lerp(
+        plotCustomerColor,
+        other.plotCustomerColor,
+        t,
+      )!,
+      white24Color: Color.lerp(white24Color, other.white24Color, t)!,
     );
   }
 }

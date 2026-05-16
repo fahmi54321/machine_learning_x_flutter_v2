@@ -3,461 +3,622 @@ import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-/// ================= STATE =================
-class ExampleState extends ChangeNotifier {
-  bool isLoading = false;
-  bool isPressed = false;
+class DecisionBoundaryPoint {
+  final double age;
+  final double estimatedSalary;
+  final double probability;
 
-  final TextEditingController levelController = TextEditingController(
-    text: '6.5',
-  );
+  DecisionBoundaryPoint({
+    required this.age,
+    required this.estimatedSalary,
+    required this.probability,
+  });
 
-  String salaryFormatted = '';
-  String category = '';
-  String recommendation = '';
-
-  List<FlSpot> curve = [];
-  List<FlSpot> realData = [];
-  FlSpot? userPoint;
-
-  FlSpot? touchedSpot;
-
-  void setPressed(bool v) {
-    isPressed = v;
-    notifyListeners();
-  }
-
-  double _getLevel() {
-    return double.tryParse(levelController.text) ?? 1;
-  }
-
-  Future<void> predict() async {
-    isLoading = true;
-    notifyListeners();
-
-    try {
-      final level = _getLevel();
-
-      final res = await http.post(
-        Uri.parse('http://10.0.2.2:5000/predict'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({"position_level": level}),
-      );
-
-      final json = jsonDecode(res.body);
-
-      salaryFormatted = json['prediction']['formatted'];
-      category = json['insight']['category'];
-      recommendation = json['insight']['recommendation'];
-
-      curve = (json['visualization']['curve'] as List)
-          .map(
-            (e) =>
-                FlSpot((e['x'] as num).toDouble(), (e['y'] as num).toDouble()),
-          )
-          .toList();
-
-      realData = (json['visualization']['real_data'] as List)
-          .map(
-            (e) =>
-                FlSpot((e['x'] as num).toDouble(), (e['y'] as num).toDouble()),
-          )
-          .toList();
-
-      userPoint = FlSpot(
-        (json['visualization']['user_point']['x'] as num).toDouble(),
-        (json['visualization']['user_point']['y'] as num).toDouble(),
-      );
-    } catch (e) {
-      salaryFormatted = 'Error';
-      recommendation = 'Failed to connect API';
-    }
-
-    isLoading = false;
-    notifyListeners();
-  }
-
-  String formatUSD(double value) {
-    return "\$${value.toStringAsFixed(0).replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (match) => ',')}";
+  factory DecisionBoundaryPoint.fromJson(Map<String, dynamic> json) {
+    return DecisionBoundaryPoint(
+      age: json['age'].toDouble(),
+      estimatedSalary: json['estimated_salary'].toDouble(),
+      probability: json['probability'].toDouble(),
+    );
   }
 }
 
-/// ================= PAGE =================
-class ExamplePage extends StatelessWidget {
-  const ExamplePage({super.key});
+class CustomerPoint {
+  final double age;
+  final double estimatedSalary;
+  final int actualClass;
+  final String pointColor;
+
+  CustomerPoint({
+    required this.age,
+    required this.estimatedSalary,
+    required this.actualClass,
+    required this.pointColor,
+  });
+
+  factory CustomerPoint.fromJson(Map<String, dynamic> json) {
+    return CustomerPoint(
+      age: json['age'].toDouble(),
+      estimatedSalary: json['estimated_salary'].toDouble(),
+      actualClass: json['actual_class'],
+      pointColor: json['point_color'],
+    );
+  }
+}
+
+class LogisticRegressionPage extends StatefulWidget {
+  const LogisticRegressionPage({super.key});
+
+  @override
+  State<LogisticRegressionPage> createState() => _LogisticRegressionPageState();
+}
+
+class _LogisticRegressionPageState extends State<LogisticRegressionPage> {
+  final ageController = TextEditingController();
+  final salaryController = TextEditingController();
+
+  bool loadingPrediction = false;
+  bool loadingPlot = false;
+
+  Map<String, dynamic>? prediction;
+
+  List<CustomerPoint> customerPoints = [];
+  List<DecisionBoundaryPoint> decisionBoundary = [];
+
+  bool showChart = false;
+
+  Future<void> getPlotData() async {
+    setState(() {
+      loadingPlot = true;
+    });
+
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:5000/plot-data'),
+    );
+
+    final data = jsonDecode(response.body);
+
+    customerPoints = (data['customer_points'] as List)
+        .map((e) => CustomerPoint.fromJson(e))
+        .toList();
+    decisionBoundary = (data['decision_boundary'] as List)
+        .map((e) => DecisionBoundaryPoint.fromJson(e))
+        .toList();
+
+    setState(() {
+      loadingPlot = false;
+      showChart = true;
+    });
+  }
+
+  Future<void> predict() async {
+    setState(() {
+      loadingPrediction = true;
+    });
+
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:5000/predict'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'age': double.parse(ageController.text),
+        'estimated_salary': double.parse(salaryController.text),
+      }),
+    );
+
+    prediction = jsonDecode(response.body);
+
+    setState(() {
+      loadingPrediction = false;
+    });
+  }
+
+  Color getPointColor(String color) {
+    if (color == 'dodgerblue') {
+      return Colors.blue;
+    }
+
+    return Colors.redAccent;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ExampleState(),
-      child: Consumer<ExampleState>(
-        builder: (context, state, _) {
-          return Scaffold(
-            body: Stack(
-              children: [
-                /// BACKGROUND
-                Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xff0f2027),
-                        Color(0xff203a43),
-                        Color(0xff2c5364),
-                      ],
-                    ),
-                  ),
-                ),
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF0F172A), Color(0xFF1E293B), Color(0xFF111827)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
 
-                Center(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(32),
-                    child: _glassContainer(
-                      child: Column(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(32),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                child: Container(
+                  width: 1000,
+                  padding: const EdgeInsets.all(32),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Colors.white.withOpacity(0.1)),
+                  ),
+
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Logistic Regression Predictor',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      Row(
                         children: [
-                          const Text(
-                            'HR Salary Predictor',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          Expanded(
+                            child: TextField(
+                              controller: ageController,
+                              keyboardType: TextInputType.number,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: 'Age',
+                                hintStyle: const TextStyle(
+                                  color: Colors.white54,
+                                ),
+                                filled: true,
+                                fillColor: Colors.white.withOpacity(0.05),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
                             ),
                           ),
 
-                          const SizedBox(height: 24),
+                          const SizedBox(width: 20),
 
-                          /// INPUT
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Position Level",
-                                style: TextStyle(color: Colors.white70),
+                          Expanded(
+                            child: TextField(
+                              controller: salaryController,
+                              keyboardType: TextInputType.number,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                hintText: 'Estimated Salary',
+                                hintStyle: const TextStyle(
+                                  color: Colors.white54,
+                                ),
+                                filled: true,
+                                fillColor: Colors.white.withOpacity(0.05),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
                               ),
-                              const SizedBox(height: 8),
-                              TextField(
-                                controller: state.levelController,
-                                style: const TextStyle(color: Colors.white),
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  hintText: "e.g. 6.5",
-                                  hintStyle: const TextStyle(
-                                    color: Colors.white38,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      SizedBox(
+                        width: double.infinity,
+                        height: 60,
+                        child: ElevatedButton(
+                          onPressed: loadingPrediction ? null : predict,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: loadingPrediction
+                              ? const CircularProgressIndicator()
+                              : const Text('Predict Customer'),
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      if (prediction != null)
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(28),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(28),
+                            color: Colors.white.withOpacity(0.06),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.08),
+                            ),
+                          ),
+
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: prediction!['prediction'] == 1
+                                      ? Colors.greenAccent.withOpacity(0.15)
+                                      : Colors.redAccent.withOpacity(0.15),
+                                ),
+
+                                child: Icon(
+                                  prediction!['prediction'] == 1
+                                      ? Icons.check_circle
+                                      : Icons.cancel,
+                                  size: 52,
+                                  color: prediction!['prediction'] == 1
+                                      ? Colors.greenAccent
+                                      : Colors.redAccent,
+                                ),
+                              ),
+
+                              const SizedBox(height: 24),
+
+                              Text(
+                                prediction!['label'],
+                                style: TextStyle(
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.bold,
+                                  color: prediction!['prediction'] == 1
+                                      ? Colors.greenAccent
+                                      : Colors.redAccent,
+                                ),
+                              ),
+
+                              const SizedBox(height: 12),
+
+                              Text(
+                                prediction!['description'],
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 16,
+                                ),
+                              ),
+
+                              const SizedBox(height: 28),
+
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _InfoCard(
+                                      title: "Age",
+                                      value: prediction!['input']['age']
+                                          .toString(),
+                                      icon: Icons.person,
+                                    ),
                                   ),
-                                  filled: true,
-                                  fillColor: Colors.white.withOpacity(0.05),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide.none,
+
+                                  const SizedBox(width: 16),
+
+                                  Expanded(
+                                    child: _InfoCard(
+                                      title: "Salary",
+                                      value:
+                                          "\$${prediction!['input']['estimated_salary']}",
+                                      icon: Icons.attach_money,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(height: 24),
+
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Buy Probability',
+                                        style: TextStyle(color: Colors.white70),
+                                      ),
+
+                                      Text(
+                                        "${(prediction!['probability']['buy_suv'] * 100).toStringAsFixed(2)}%",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  const SizedBox(height: 12),
+
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: LinearProgressIndicator(
+                                      value:
+                                          prediction!['probability']['buy_suv'],
+                                      minHeight: 14,
+                                      backgroundColor: Colors.white.withOpacity(
+                                        0.08,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(height: 30),
+
+                              SizedBox(
+                                width: double.infinity,
+                                height: 56,
+                                child: ElevatedButton.icon(
+                                  onPressed: loadingPlot
+                                      ? null
+                                      : openVisualization,
+
+                                  icon: loadingPlot
+                                      ? const SizedBox(
+                                          width: 18,
+                                          height: 18,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : const Icon(Icons.analytics),
+
+                                  label: Text(
+                                    loadingPlot
+                                        ? 'Loading Visualization...'
+                                        : 'Show Visualization',
+                                  ),
+
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blueAccent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-
-                          const SizedBox(height: 20),
-
-                          /// BUTTON
-                          GestureDetector(
-                            onTapDown: (_) => state.setPressed(true),
-                            onTapUp: (_) => state.setPressed(false),
-                            onTapCancel: () => state.setPressed(false),
-                            onTap: state.predict,
-                            child: AnimatedScale(
-                              scale: state.isPressed ? 0.95 : 1,
-                              duration: const Duration(milliseconds: 150),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 36,
-                                  vertical: 14,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color(0xff00c6ff),
-                                      Color(0xff0072ff),
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                                child: const Text(
-                                  'Predict Salary',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 30),
-
-                          /// RESULT
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 500),
-                            child: state.isLoading
-                                ? const CircularProgressIndicator(
-                                    color: Colors.white,
-                                  )
-                                : state.salaryFormatted.isNotEmpty
-                                ? _result(state)
-                                : const SizedBox(),
-                          ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      const SizedBox(height: 40),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
 
-  /// ================= RESULT =================
-  Widget _result(ExampleState state) {
-    return Column(
-      children: [
-        Text(
-          state.salaryFormatted,
-          style: const TextStyle(
-            fontSize: 34,
-            fontWeight: FontWeight.bold,
-            color: Colors.greenAccent,
-          ),
-        ),
+  Future<void> openVisualization() async {
+    if (customerPoints.isEmpty) {
+      await getPlotData();
+    }
 
-        const SizedBox(height: 10),
+    if (!mounted) return;
 
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            color: Colors.blueAccent.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: Text(
-            state.category,
-            style: const TextStyle(color: Colors.white),
-          ),
-        ),
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
 
-        const SizedBox(height: 20),
+      builder: (_) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.92,
+          minChildSize: 0.7,
+          maxChildSize: 0.98,
 
-        /// CHART
-        SizedBox(
-          height: 300,
-          child: LineChart(
-            LineChartData(
-              minX: 0,
-              maxX: 11, // lebih luas dari data (1–10)
-
-              minY: 0,
-              maxY: state.curve.isNotEmpty
-                  ? state.curve
-                            .map((e) => e.y)
-                            .reduce((a, b) => a > b ? a : b) *
-                        1.2
-                  : 1000000,
-              gridData: FlGridData(
-                show: true,
-                drawVerticalLine: true,
-                getDrawingHorizontalLine: (_) => FlLine(
-                  color: Colors.white.withOpacity(0.08),
-                  strokeWidth: 1,
-                ),
-                getDrawingVerticalLine: (_) => FlLine(
-                  color: Colors.white.withOpacity(0.08),
-                  strokeWidth: 1,
-                ),
-              ),
-              titlesData: FlTitlesData(show: false),
-
-              lineTouchData: LineTouchData(
-                enabled: true,
-                touchTooltipData: LineTouchTooltipData(
-                  tooltipBorderRadius: BorderRadius.circular(16),
-                  tooltipPadding: const EdgeInsets.all(12),
-                  // tooltipBackgroundColor: Colors.black.withOpacity(0.7),
-                  getTooltipItems: (spots) {
-                    return spots.map((spot) {
-                      String label;
-                      Color color;
-
-                      switch (spot.barIndex) {
-                        case 0:
-                          label = "Predicted";
-                          color = Colors.blueAccent;
-                          break;
-                        case 1:
-                          label = "Actual";
-                          color = Colors.redAccent;
-                          break;
-                        case 2:
-                          label = "Your Prediction";
-                          color = Colors.greenAccent;
-                          break;
-                        default:
-                          label = "";
-                          color = Colors.white;
-                      }
-
-                      return LineTooltipItem(
-                        "$label\nLevel ${spot.x.toStringAsFixed(1)}\n${state.formatUSD(spot.y)}",
-                        TextStyle(color: color, fontWeight: FontWeight.bold),
-                      );
-                    }).toList();
-                  },
-                ),
-
-                touchCallback: (event, response) {
-                  if (response != null && response.lineBarSpots != null) {
-                    state.touchedSpot = response.lineBarSpots!.first;
-                  } else {
-                    state.touchedSpot = null;
-                  }
-                  state.notifyListeners();
-                },
+          builder: (context, controller) {
+            return Container(
+              decoration: const BoxDecoration(
+                color: Color(0xFF0F172A),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               ),
 
-              lineBarsData: [
-                /// PREDICTED
-                LineChartBarData(
-                  spots: state.curve,
-                  isCurved: true,
-                  color: Colors.blueAccent,
-                  barWidth: 2,
-                  dotData: _dot(state),
-                  belowBarData: BarAreaData(
-                    show: true,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.blueAccent.withOpacity(0.3),
-                        Colors.transparent,
+              child: Column(
+                children: [
+                  const SizedBox(height: 14),
+
+                  Container(
+                    width: 80,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+
+                    child: Row(
+                      children: [
+                        Icon(Icons.analytics, color: Colors.white),
+
+                        SizedBox(width: 12),
+
+                        Text(
+                          'AI Visualization',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),
 
-                /// ACTUAL
-                LineChartBarData(
-                  spots: state.realData,
-                  isCurved: false,
-                  color: Colors.redAccent,
-                  barWidth: 0.0,
-                  dotData: FlDotData(
-                    show: true,
-                    getDotPainter: (spot, _, __, ___) {
-                      return FlDotCirclePainter(
-                        radius: 3.5, // 🔥 kecil biar gak numpuk
-                        color: Colors.redAccent,
-                        strokeWidth: 1,
-                        strokeColor: Colors.white,
-                      );
-                    },
-                  ),
-                ),
+                  const SizedBox(height: 20),
 
-                /// USER
-                if (state.userPoint != null)
-                  LineChartBarData(
-                    spots: [state.userPoint!],
-                    isCurved: false,
-                    color: Colors.greenAccent,
-                    barWidth: 0,
-                    dotData: FlDotData(
-                      show: true,
-                      getDotPainter: (_, __, ___, ____) => FlDotCirclePainter(
-                        radius: 7,
-                        color: Colors.greenAccent,
-                        strokeWidth: 3,
-                        strokeColor: Colors.white,
+                  Expanded(
+                    child: InteractiveViewer(
+                      maxScale: 5,
+
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+
+                        child: ScatterChart(
+                          ScatterChartData(
+                            minX: 10,
+                            maxX: 70,
+                            minY: 0,
+                            maxY: 160000,
+
+                            gridData: const FlGridData(show: true),
+
+                            borderData: FlBorderData(
+                              show: true,
+                              border: Border.all(color: Colors.white24),
+                            ),
+
+                            titlesData: const FlTitlesData(show: true),
+
+                            scatterSpots: [
+                              // CUSTOMER
+                              ...customerPoints.map((e) {
+                                return ScatterSpot(
+                                  e.age,
+                                  e.estimatedSalary,
+
+                                  dotPainter: FlDotCirclePainter(
+                                    radius: 5,
+                                    color: e.actualClass == 1
+                                        ? Colors.blue
+                                        : Colors.redAccent,
+                                  ),
+                                );
+                              }),
+
+                              // DECISION BOUNDARY
+                              ...decisionBoundary.map((e) {
+                                return ScatterSpot(
+                                  e.age,
+                                  e.estimatedSalary,
+
+                                  dotPainter: FlDotCirclePainter(
+                                    radius: 2.5,
+                                    color: Colors.cyanAccent,
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
-              ],
-            ),
-          ),
-        ),
 
-        const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
 
-        /// LEGEND
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _legend(Colors.blueAccent, "Predicted"),
-            const SizedBox(width: 16),
-            _legend(Colors.redAccent, "Actual"),
-            const SizedBox(width: 16),
-            _legend(Colors.greenAccent, "You"),
-          ],
-        ),
+                    child: Wrap(
+                      spacing: 20,
+                      runSpacing: 12,
 
-        const SizedBox(height: 20),
+                      alignment: WrapAlignment.center,
 
-        Text(
-          state.recommendation,
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white70),
-        ),
-      ],
-    );
-  }
+                      children: const [
+                        _Legend(color: Colors.redAccent, text: 'NOT BUY SUV'),
 
-  /// DOT STYLE
-  FlDotData _dot(ExampleState state) {
-    return FlDotData(
-      show: true,
-      getDotPainter: (spot, _, barData, __) {
-        final isTouched =
-            state.touchedSpot?.x == spot.x && state.touchedSpot?.y == spot.y;
+                        _Legend(color: Colors.blue, text: 'BUY SUV'),
 
-        return FlDotCirclePainter(
-          radius: isTouched ? 8 : 4,
-          color: barData.color ?? Colors.white,
-          strokeWidth: isTouched ? 3 : 1,
-          strokeColor: Colors.white,
+                        _Legend(
+                          color: Colors.cyanAccent,
+                          text: 'Decision Boundary',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         );
       },
     );
   }
+}
 
-  /// LEGEND
-  Widget _legend(Color color, String text) {
+class _Legend extends StatelessWidget {
+  final Color color;
+  final String text;
+
+  const _Legend({required this.color, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Container(
-          width: 12,
-          height: 12,
+          width: 14,
+          height: 14,
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(4),
           ),
         ),
-        const SizedBox(width: 6),
+        const SizedBox(width: 8),
         Text(text, style: const TextStyle(color: Colors.white70)),
       ],
     );
   }
+}
 
-  /// GLASS
-  Widget _glassContainer({required Widget child}) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(30),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-        child: Container(
-          width: 800,
-          padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.08),
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: Colors.white24),
+class _InfoCard extends StatelessWidget {
+  final String title;
+  final String value;
+  final IconData icon;
+
+  const _InfoCard({
+    required this.title,
+    required this.value,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        color: Colors.white.withOpacity(0.05),
+      ),
+
+      child: Column(
+        children: [
+          Icon(icon, color: Colors.blueAccent),
+
+          const SizedBox(height: 10),
+
+          Text(title, style: const TextStyle(color: Colors.white54)),
+
+          const SizedBox(height: 6),
+
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
           ),
-          child: child,
-        ),
+        ],
       ),
     );
   }

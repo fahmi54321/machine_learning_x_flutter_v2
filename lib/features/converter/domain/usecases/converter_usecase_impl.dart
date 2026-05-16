@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:fl_chart/src/chart/base/axis_chart/axis_chart_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:machine_learning_x_flutter/features/converter/domain/usecases/converter_usecase.dart';
 import 'package:machine_learning_x_flutter/features/hr_salaries_predictor/domain/entities/hr_point_entity.dart';
 
@@ -86,6 +87,38 @@ class ConverterUsecaseImpl implements ConverterUsecase {
       }
     } else {
       return [];
+    }
+  }
+
+  @override
+  String doubleToString({required double value}) {
+    try {
+      return value.toString();
+    } catch (e) {
+      debugPrint('Error converting string to double: $e');
+      return '';
+    }
+  }
+
+  @override
+  String buySuvFormatted({required double value}) {
+    try {
+      return '${(value * 100).toStringAsFixed(2)}%';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  @override
+  String currencyFormatted({required double value}) {
+    try {
+      return NumberFormat.currency(
+        locale: 'en_US',
+        symbol: '\$',
+        decimalDigits: 0,
+      ).format(value);
+    } catch (e) {
+      return '0';
     }
   }
 }

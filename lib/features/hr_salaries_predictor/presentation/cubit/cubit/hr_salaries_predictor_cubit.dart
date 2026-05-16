@@ -129,52 +129,6 @@ class HrSalariesPredictorCubit
     updateState((s) => s.copyWith(touchedSpot: data));
   }
 
-  // Future<void> predict() async {
-  //   isLoading = true;
-  //   notifyListeners();
-
-  //   try {
-  //     final level = _getLevel();
-
-  //     final res = await http.post(
-  //       Uri.parse('http://10.0.2.2:5000/predict'),
-  //       headers: {'Content-Type': 'application/json'},
-  //       body: jsonEncode({"position_level": level}),
-  //     );
-
-  //     final json = jsonDecode(res.body);
-
-  //     salaryFormatted = json['prediction']['formatted'];
-  //     category = json['insight']['category'];
-  //     recommendation = json['insight']['recommendation'];
-
-  //     curve = (json['visualization']['curve'] as List)
-  //         .map(
-  //           (e) =>
-  //               FlSpot((e['x'] as num).toDouble(), (e['y'] as num).toDouble()),
-  //         )
-  //         .toList();
-
-  //     realData = (json['visualization']['real_data'] as List)
-  //         .map(
-  //           (e) =>
-  //               FlSpot((e['x'] as num).toDouble(), (e['y'] as num).toDouble()),
-  //         )
-  //         .toList();
-
-  //     userPoint = FlSpot(
-  //       (json['visualization']['user_point']['x'] as num).toDouble(),
-  //       (json['visualization']['user_point']['y'] as num).toDouble(),
-  //     );
-  //   } catch (e) {
-  //     salaryFormatted = 'Error';
-  //     recommendation = 'Failed to connect API';
-  //   }
-
-  //   isLoading = false;
-  //   notifyListeners();
-  // }
-
   String formatUSD(double value) {
     return converterUsecase.doubleToFomatUSD(value: value);
   }

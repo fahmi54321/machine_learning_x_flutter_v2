@@ -1,3 +1,6 @@
 {
-  "dart.flutterSdkPath": ".fvm/versions/3.38.7"
+  "dart.flutterSdkPath": ".fvm/versions/3.41.6",
+  // "editor.quickSuggestions": false,
+  // "editor.suggestOnTriggerCharacters": false,
+  "editor.inlineSuggest.enabled": false
 }

@@ -3,6 +3,7 @@ import 'package:machine_learning_x_flutter/injection/core_injection.dart';
 import 'package:machine_learning_x_flutter/injection/external_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/camera_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/converter_injection.dart';
+import 'package:machine_learning_x_flutter/injection/features/customer_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/fashion_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/file_injection.dart';
 import 'package:machine_learning_x_flutter/injection/features/food_injection.dart';
@@ -29,6 +30,7 @@ Future<void> init() async {
   initFashionFeature();
   initFoodFeature();
   initHrSalariesFeature();
+  initCustomerFeature();
 }
 
 // Note:

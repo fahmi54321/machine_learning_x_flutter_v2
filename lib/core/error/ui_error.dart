@@ -8,6 +8,7 @@ enum ErrorSource {
   salaries,
   startup,
   hrSalariesPredictor,
+  customerPredict,
 }
 
 class UiError {

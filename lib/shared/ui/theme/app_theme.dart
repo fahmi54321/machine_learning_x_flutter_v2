@@ -159,9 +159,15 @@ class AppTheme {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
+          customerPredictionGradient: LinearGradient(
+            colors: [Color(0xFF0F172A), Color(0xFF1E293B), Color(0xFF111827)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           bgImageGradient: LinearGradient(
             colors: [Color(0xff00c6ff), Color(0xff0072ff)],
           ),
+
           riskLowColor: Color(0xFF00E676),
           riskMediumColor: Color(0xFFFFA726),
           riskHighColor: Color(0xFFFF5252),
@@ -177,6 +183,10 @@ class AppTheme {
           blueAccentColor: Colors.blueAccent,
           redAccentColor: Colors.redAccent,
           white70Color: Colors.white70,
+          blueColor: Color(0xFF42A5F5),
+          whiteColor: Color(0xFFFFFFFF),
+          plotCustomerColor: Color(0xFF0F172A),
+          white24Color: Colors.white24,
         ),
       ],
     );

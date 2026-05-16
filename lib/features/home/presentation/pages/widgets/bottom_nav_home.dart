@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:machine_learning_x_flutter/features/customer_prediction/presentation/pages/customer_prediction_page.dart';
 import 'package:machine_learning_x_flutter/features/hr_salaries_predictor/presentation/pages/hr_salaries_predictor_page.dart';
 import 'package:machine_learning_x_flutter/shared/ui/theme/app_glass_theme.dart';
 import 'package:machine_learning_x_flutter/features/food_vision/presentation/pages/food_vision_page.dart';
@@ -133,10 +134,15 @@ class BottomNavHome extends StatelessWidget {
                           },
                         ),
                         _GridItem(
-                          icon: Icons.settings,
-                          label: "Settings",
+                          icon: Icons.verified_user,
+                          label: "Customer Prediction",
                           onTap: () {
-                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => CustomerPredictionWrapper(),
+                              ),
+                            );
                           },
                         ),
                         _GridItem(
@@ -202,7 +208,11 @@ class _GridItem extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.white),
             const SizedBox(height: 10),
-            Text(label, style: theme.textTheme.bodySmall),
+            Text(
+              label,
+              style: theme.textTheme.bodySmall,
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
