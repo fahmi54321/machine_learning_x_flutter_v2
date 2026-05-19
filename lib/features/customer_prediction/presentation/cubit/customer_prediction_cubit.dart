@@ -170,4 +170,8 @@ class CustomerPredictionCubit extends BaseStateCubit<CustomerPredictionState> {
       },
     );
   }
+
+  void resetPlotStatus() {
+    updateState((s) => s.copyWith(plotDataStatus: PlotDataStatus.initial));
+  }
 }

@@ -4,13 +4,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:machine_learning_x_flutter/features/converter/domain/usecases/converter_usecase.dart';
 import 'package:machine_learning_x_flutter/features/customer_prediction/domain/entities/plot_data_entity.dart';
 import 'package:machine_learning_x_flutter/features/customer_prediction/presentation/cubit/customer_prediction_cubit.dart';
+import 'package:machine_learning_x_flutter/features/customer_prediction/presentation/cubit/customer_prediction_state.dart';
 import 'package:machine_learning_x_flutter/injection/injection.dart';
 import 'package:machine_learning_x_flutter/shared/ui/theme/app_glass_theme.dart';
 import 'package:machine_learning_x_flutter/shared/ui/widgets/button/glass_primary_button.dart';
 
-class ResultCustomerPrediction extends StatelessWidget {
-  ResultCustomerPrediction({super.key});
+class ResultCustomerPrediction extends StatefulWidget {
+  const ResultCustomerPrediction({super.key});
+
+  @override
+  State<ResultCustomerPrediction> createState() =>
+      _ResultCustomerPredictionState();
+}
+
+class _ResultCustomerPredictionState extends State<ResultCustomerPrediction> {
   final ConverterUsecase converterUsecase = sl();
+
+  bool _isNavigate = false;
+
+  void updateIsNavigate(bool val) {
+    _isNavigate = val;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +39,21 @@ class ResultCustomerPrediction extends StatelessWidget {
         .watch<CustomerPredictionCubit>()
         .state
         .plotDataEntity;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (context.read<CustomerPredictionCubit>().state.plotDataStatus ==
+          PlotDataStatus.success) {
+        if (!_isNavigate) {
+          updateIsNavigate(true);
+
+          openVisualization(plotData: plotData, context: context);
+
+          updateIsNavigate(false);
+
+          context.read<CustomerPredictionCubit>().resetPlotStatus();
+        }
+      }
+    });
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 700),
       child: prediction != null
@@ -168,15 +198,8 @@ class ResultCustomerPrediction extends StatelessWidget {
                   const SizedBox(height: 30),
                   GlassPrimaryButton(
                     text: 'Show Visualization',
-                    onTap: () {
-                      openVisualization(
-                        plotData: plotData,
-                        context: context,
-                        getPlotData: context
-                            .read<CustomerPredictionCubit>()
-                            .plotData,
-                      );
-                    },
+
+                    onTap: context.read<CustomerPredictionCubit>().plotData,
                   ),
                 ],
               ),
@@ -188,12 +211,7 @@ class ResultCustomerPrediction extends StatelessWidget {
   Future<void> openVisualization({
     required PlotDataEntity? plotData,
     required BuildContext context,
-    required Function() getPlotData,
   }) async {
-    if (plotData == null) {
-      await getPlotData();
-    }
-
     if (!context.mounted) return;
 
     final glass = Theme.of(context).extension<AppGlassTheme>()!;
@@ -263,10 +281,10 @@ class ResultCustomerPrediction extends StatelessWidget {
 
                         child: ScatterChart(
                           ScatterChartData(
-                            minX: 10,
-                            maxX: 70,
-                            minY: 0,
-                            maxY: 160000,
+                            minX: 8,
+                            maxX: 72,
+                            minY: -5000,
+                            maxY: 165000,
 
                             gridData: const FlGridData(show: true),
 
@@ -278,6 +296,30 @@ class ResultCustomerPrediction extends StatelessWidget {
                             titlesData: const FlTitlesData(show: true),
 
                             scatterSpots: [
+                              // =========================
+                              // BACKGROUND REGIONS
+                              // =========================
+                              ...(plotData?.predictionRegions ?? []).map((e) {
+                                return ScatterSpot(
+                                  e.age,
+                                  e.estimatedSalary,
+
+                                  dotPainter: FlDotCirclePainter(
+                                    // kecil agar seperti pixel contour
+                                    radius: 1.2,
+
+                                    color: e.prediction == 1
+                                        ? glass.blueColor.withOpacity(0.50)
+                                        : glass.redAccentColor.withOpacity(
+                                            0.50,
+                                          ),
+                                  ),
+                                );
+                              }),
+
+                              // =========================
+                              // CUSTOMER POINTS
+                              // =========================
                               ...(plotData?.customerPoints ?? []).map((e) {
                                 return ScatterSpot(
                                   e.age,
@@ -285,6 +327,7 @@ class ResultCustomerPrediction extends StatelessWidget {
 
                                   dotPainter: FlDotCirclePainter(
                                     radius: 5,
+
                                     color: e.actualClass == 1
                                         ? glass.blueColor
                                         : glass.redAccentColor,
@@ -292,7 +335,9 @@ class ResultCustomerPrediction extends StatelessWidget {
                                 );
                               }),
 
+                              // =========================
                               // DECISION BOUNDARY
+                              // =========================
                               ...(plotData?.decisionBoundary ?? []).map((e) {
                                 return ScatterSpot(
                                   e.age,
