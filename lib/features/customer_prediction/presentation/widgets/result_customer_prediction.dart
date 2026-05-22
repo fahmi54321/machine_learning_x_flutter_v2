@@ -169,30 +169,34 @@ class _ResultCustomerPredictionState extends State<ResultCustomerPrediction> {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  Visibility(
+                    visible: prediction.model != 'Support Vector Machine',
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 24.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: _ProbabilityCard(
+                              title: 'Potensi Membeli',
+                              probability: prediction.probability.buySuv,
+                              color: glass.greenAccentColor,
+                              icon: Icons.trending_up_rounded,
+                            ),
+                          ),
 
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _ProbabilityCard(
-                          title: 'Potensi Membeli',
-                          probability: prediction.probability.buySuv,
-                          color: glass.greenAccentColor,
-                          icon: Icons.trending_up_rounded,
-                        ),
+                          const SizedBox(width: 16),
+
+                          Expanded(
+                            child: _ProbabilityCard(
+                              title: 'Potensi Tidak Membeli',
+                              probability: prediction.probability.notBuySuv,
+                              color: glass.redAccentColor,
+                              icon: Icons.trending_down_rounded,
+                            ),
+                          ),
+                        ],
                       ),
-
-                      const SizedBox(width: 16),
-
-                      Expanded(
-                        child: _ProbabilityCard(
-                          title: 'Potensi Tidak Membeli',
-                          probability: prediction.probability.notBuySuv,
-                          color: glass.redAccentColor,
-                          icon: Icons.trending_down_rounded,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
 
                   const SizedBox(height: 30),
