@@ -29,6 +29,15 @@ mixin _$PlotDataModel {
   @JsonKey(name: 'decision_boundary', defaultValue: [])
   List<DecisionBoundaryModel> get decisionBoundary =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'negative_hyperplane', defaultValue: [])
+  List<HyperplaneModel> get negativeHyperplane =>
+      throw _privateConstructorUsedError;
+  @JsonKey(name: 'positive_hyperplane', defaultValue: [])
+  List<HyperplaneModel> get positiveHyperplane =>
+      throw _privateConstructorUsedError;
+  @JsonKey(name: 'support_vectors', defaultValue: [])
+  List<SupportVectorModel> get supportVectors =>
+      throw _privateConstructorUsedError;
   @JsonKey(name: 'legend')
   LegendModel? get legend => throw _privateConstructorUsedError;
   @JsonKey(name: 'model', defaultValue: '')
@@ -62,6 +71,12 @@ abstract class $PlotDataModelCopyWith<$Res> {
     List<CustomerPointModel> customerPoints,
     @JsonKey(name: 'decision_boundary', defaultValue: [])
     List<DecisionBoundaryModel> decisionBoundary,
+    @JsonKey(name: 'negative_hyperplane', defaultValue: [])
+    List<HyperplaneModel> negativeHyperplane,
+    @JsonKey(name: 'positive_hyperplane', defaultValue: [])
+    List<HyperplaneModel> positiveHyperplane,
+    @JsonKey(name: 'support_vectors', defaultValue: [])
+    List<SupportVectorModel> supportVectors,
     @JsonKey(name: 'legend') LegendModel? legend,
     @JsonKey(name: 'model', defaultValue: '') String model,
     @JsonKey(name: 'plot_range') PlotRangeModel? plotRange,
@@ -92,6 +107,9 @@ class _$PlotDataModelCopyWithImpl<$Res, $Val extends PlotDataModel>
     Object? axis = freezed,
     Object? customerPoints = null,
     Object? decisionBoundary = null,
+    Object? negativeHyperplane = null,
+    Object? positiveHyperplane = null,
+    Object? supportVectors = null,
     Object? legend = freezed,
     Object? model = null,
     Object? plotRange = freezed,
@@ -111,6 +129,18 @@ class _$PlotDataModelCopyWithImpl<$Res, $Val extends PlotDataModel>
                 ? _value.decisionBoundary
                 : decisionBoundary // ignore: cast_nullable_to_non_nullable
                       as List<DecisionBoundaryModel>,
+            negativeHyperplane: null == negativeHyperplane
+                ? _value.negativeHyperplane
+                : negativeHyperplane // ignore: cast_nullable_to_non_nullable
+                      as List<HyperplaneModel>,
+            positiveHyperplane: null == positiveHyperplane
+                ? _value.positiveHyperplane
+                : positiveHyperplane // ignore: cast_nullable_to_non_nullable
+                      as List<HyperplaneModel>,
+            supportVectors: null == supportVectors
+                ? _value.supportVectors
+                : supportVectors // ignore: cast_nullable_to_non_nullable
+                      as List<SupportVectorModel>,
             legend: freezed == legend
                 ? _value.legend
                 : legend // ignore: cast_nullable_to_non_nullable
@@ -190,6 +220,12 @@ abstract class _$$PlotDataModelImplCopyWith<$Res>
     List<CustomerPointModel> customerPoints,
     @JsonKey(name: 'decision_boundary', defaultValue: [])
     List<DecisionBoundaryModel> decisionBoundary,
+    @JsonKey(name: 'negative_hyperplane', defaultValue: [])
+    List<HyperplaneModel> negativeHyperplane,
+    @JsonKey(name: 'positive_hyperplane', defaultValue: [])
+    List<HyperplaneModel> positiveHyperplane,
+    @JsonKey(name: 'support_vectors', defaultValue: [])
+    List<SupportVectorModel> supportVectors,
     @JsonKey(name: 'legend') LegendModel? legend,
     @JsonKey(name: 'model', defaultValue: '') String model,
     @JsonKey(name: 'plot_range') PlotRangeModel? plotRange,
@@ -222,6 +258,9 @@ class __$$PlotDataModelImplCopyWithImpl<$Res>
     Object? axis = freezed,
     Object? customerPoints = null,
     Object? decisionBoundary = null,
+    Object? negativeHyperplane = null,
+    Object? positiveHyperplane = null,
+    Object? supportVectors = null,
     Object? legend = freezed,
     Object? model = null,
     Object? plotRange = freezed,
@@ -241,6 +280,18 @@ class __$$PlotDataModelImplCopyWithImpl<$Res>
             ? _value._decisionBoundary
             : decisionBoundary // ignore: cast_nullable_to_non_nullable
                   as List<DecisionBoundaryModel>,
+        negativeHyperplane: null == negativeHyperplane
+            ? _value._negativeHyperplane
+            : negativeHyperplane // ignore: cast_nullable_to_non_nullable
+                  as List<HyperplaneModel>,
+        positiveHyperplane: null == positiveHyperplane
+            ? _value._positiveHyperplane
+            : positiveHyperplane // ignore: cast_nullable_to_non_nullable
+                  as List<HyperplaneModel>,
+        supportVectors: null == supportVectors
+            ? _value._supportVectors
+            : supportVectors // ignore: cast_nullable_to_non_nullable
+                  as List<SupportVectorModel>,
         legend: freezed == legend
             ? _value.legend
             : legend // ignore: cast_nullable_to_non_nullable
@@ -271,6 +322,12 @@ class _$PlotDataModelImpl extends _PlotDataModel {
     required final List<CustomerPointModel> customerPoints,
     @JsonKey(name: 'decision_boundary', defaultValue: [])
     required final List<DecisionBoundaryModel> decisionBoundary,
+    @JsonKey(name: 'negative_hyperplane', defaultValue: [])
+    required final List<HyperplaneModel> negativeHyperplane,
+    @JsonKey(name: 'positive_hyperplane', defaultValue: [])
+    required final List<HyperplaneModel> positiveHyperplane,
+    @JsonKey(name: 'support_vectors', defaultValue: [])
+    required final List<SupportVectorModel> supportVectors,
     @JsonKey(name: 'legend') this.legend,
     @JsonKey(name: 'model', defaultValue: '') required this.model,
     @JsonKey(name: 'plot_range') this.plotRange,
@@ -278,6 +335,9 @@ class _$PlotDataModelImpl extends _PlotDataModel {
     required final List<PredictionRegionsModel> predictionRegions,
   }) : _customerPoints = customerPoints,
        _decisionBoundary = decisionBoundary,
+       _negativeHyperplane = negativeHyperplane,
+       _positiveHyperplane = positiveHyperplane,
+       _supportVectors = supportVectors,
        _predictionRegions = predictionRegions,
        super._();
 
@@ -306,6 +366,35 @@ class _$PlotDataModelImpl extends _PlotDataModel {
     return EqualUnmodifiableListView(_decisionBoundary);
   }
 
+  final List<HyperplaneModel> _negativeHyperplane;
+  @override
+  @JsonKey(name: 'negative_hyperplane', defaultValue: [])
+  List<HyperplaneModel> get negativeHyperplane {
+    if (_negativeHyperplane is EqualUnmodifiableListView)
+      return _negativeHyperplane;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_negativeHyperplane);
+  }
+
+  final List<HyperplaneModel> _positiveHyperplane;
+  @override
+  @JsonKey(name: 'positive_hyperplane', defaultValue: [])
+  List<HyperplaneModel> get positiveHyperplane {
+    if (_positiveHyperplane is EqualUnmodifiableListView)
+      return _positiveHyperplane;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_positiveHyperplane);
+  }
+
+  final List<SupportVectorModel> _supportVectors;
+  @override
+  @JsonKey(name: 'support_vectors', defaultValue: [])
+  List<SupportVectorModel> get supportVectors {
+    if (_supportVectors is EqualUnmodifiableListView) return _supportVectors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_supportVectors);
+  }
+
   @override
   @JsonKey(name: 'legend')
   final LegendModel? legend;
@@ -327,7 +416,7 @@ class _$PlotDataModelImpl extends _PlotDataModel {
 
   @override
   String toString() {
-    return 'PlotDataModel(axis: $axis, customerPoints: $customerPoints, decisionBoundary: $decisionBoundary, legend: $legend, model: $model, plotRange: $plotRange, predictionRegions: $predictionRegions)';
+    return 'PlotDataModel(axis: $axis, customerPoints: $customerPoints, decisionBoundary: $decisionBoundary, negativeHyperplane: $negativeHyperplane, positiveHyperplane: $positiveHyperplane, supportVectors: $supportVectors, legend: $legend, model: $model, plotRange: $plotRange, predictionRegions: $predictionRegions)';
   }
 
   @override
@@ -343,6 +432,18 @@ class _$PlotDataModelImpl extends _PlotDataModel {
             const DeepCollectionEquality().equals(
               other._decisionBoundary,
               _decisionBoundary,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._negativeHyperplane,
+              _negativeHyperplane,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._positiveHyperplane,
+              _positiveHyperplane,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._supportVectors,
+              _supportVectors,
             ) &&
             (identical(other.legend, legend) || other.legend == legend) &&
             (identical(other.model, model) || other.model == model) &&
@@ -361,6 +462,9 @@ class _$PlotDataModelImpl extends _PlotDataModel {
     axis,
     const DeepCollectionEquality().hash(_customerPoints),
     const DeepCollectionEquality().hash(_decisionBoundary),
+    const DeepCollectionEquality().hash(_negativeHyperplane),
+    const DeepCollectionEquality().hash(_positiveHyperplane),
+    const DeepCollectionEquality().hash(_supportVectors),
     legend,
     model,
     plotRange,
@@ -388,6 +492,12 @@ abstract class _PlotDataModel extends PlotDataModel {
     required final List<CustomerPointModel> customerPoints,
     @JsonKey(name: 'decision_boundary', defaultValue: [])
     required final List<DecisionBoundaryModel> decisionBoundary,
+    @JsonKey(name: 'negative_hyperplane', defaultValue: [])
+    required final List<HyperplaneModel> negativeHyperplane,
+    @JsonKey(name: 'positive_hyperplane', defaultValue: [])
+    required final List<HyperplaneModel> positiveHyperplane,
+    @JsonKey(name: 'support_vectors', defaultValue: [])
+    required final List<SupportVectorModel> supportVectors,
     @JsonKey(name: 'legend') final LegendModel? legend,
     @JsonKey(name: 'model', defaultValue: '') required final String model,
     @JsonKey(name: 'plot_range') final PlotRangeModel? plotRange,
@@ -408,6 +518,15 @@ abstract class _PlotDataModel extends PlotDataModel {
   @override
   @JsonKey(name: 'decision_boundary', defaultValue: [])
   List<DecisionBoundaryModel> get decisionBoundary;
+  @override
+  @JsonKey(name: 'negative_hyperplane', defaultValue: [])
+  List<HyperplaneModel> get negativeHyperplane;
+  @override
+  @JsonKey(name: 'positive_hyperplane', defaultValue: [])
+  List<HyperplaneModel> get positiveHyperplane;
+  @override
+  @JsonKey(name: 'support_vectors', defaultValue: [])
+  List<SupportVectorModel> get supportVectors;
   @override
   @JsonKey(name: 'legend')
   LegendModel? get legend;

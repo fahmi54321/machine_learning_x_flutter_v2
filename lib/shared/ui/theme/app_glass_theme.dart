@@ -39,6 +39,9 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
   final Color whiteColor;
   final Color plotCustomerColor;
   final Color white24Color;
+  final Color yellowColor;
+  final Color orangeColor;
+  final Color purpleColor;
 
   const AppGlassTheme({
     required this.blur,
@@ -74,6 +77,9 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
     required this.whiteColor,
     required this.plotCustomerColor,
     required this.white24Color,
+    required this.yellowColor,
+    required this.orangeColor,
+    required this.purpleColor,
   });
 
   @override
@@ -111,6 +117,9 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
     Color? whiteColor,
     Color? plotCustomerColor,
     Color? white24Color,
+    Color? yellowColor,
+    Color? orangeColor,
+    Color? purpleColor,
   }) {
     return AppGlassTheme(
       blur: blur ?? this.blur,
@@ -148,6 +157,9 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
       whiteColor: whiteColor ?? this.whiteColor,
       plotCustomerColor: plotCustomerColor ?? this.plotCustomerColor,
       white24Color: white24Color ?? this.white24Color,
+      yellowColor: yellowColor ?? this.yellowColor,
+      orangeColor: orangeColor ?? this.orangeColor,
+      purpleColor: purpleColor ?? this.purpleColor,
     );
   }
 
@@ -225,6 +237,9 @@ class AppGlassTheme extends ThemeExtension<AppGlassTheme> {
         t,
       )!,
       white24Color: Color.lerp(white24Color, other.white24Color, t)!,
+      yellowColor: Color.lerp(yellowColor, other.yellowColor, t)!,
+      orangeColor: Color.lerp(orangeColor, other.orangeColor, t)!,
+      purpleColor: Color.lerp(purpleColor, other.purpleColor, t)!,
     );
   }
 }

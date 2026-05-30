@@ -2,9 +2,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:machine_learning_x_flutter/features/customer_prediction/data/models/axis/axis_model.dart';
 import 'package:machine_learning_x_flutter/features/customer_prediction/data/models/customer_point/customer_point_model.dart';
 import 'package:machine_learning_x_flutter/features/customer_prediction/data/models/decision_boundary/decision_boundary_model.dart';
+import 'package:machine_learning_x_flutter/features/customer_prediction/data/models/hyperplane/hyperplane_model.dart';
 import 'package:machine_learning_x_flutter/features/customer_prediction/data/models/legend/legend_model.dart';
 import 'package:machine_learning_x_flutter/features/customer_prediction/data/models/plot_range/plot_range_model.dart';
 import 'package:machine_learning_x_flutter/features/customer_prediction/data/models/prediction_regions/prediction_regions_model.dart';
+import 'package:machine_learning_x_flutter/features/customer_prediction/data/models/support_vector/support_vector_model.dart';
 
 part 'plot_data_model.g.dart';
 
@@ -20,6 +22,12 @@ class PlotDataModel with _$PlotDataModel {
     required List<CustomerPointModel> customerPoints,
     @JsonKey(name: 'decision_boundary', defaultValue: [])
     required List<DecisionBoundaryModel> decisionBoundary,
+    @JsonKey(name: 'negative_hyperplane', defaultValue: [])
+    required List<HyperplaneModel> negativeHyperplane,
+    @JsonKey(name: 'positive_hyperplane', defaultValue: [])
+    required List<HyperplaneModel> positiveHyperplane,
+    @JsonKey(name: 'support_vectors', defaultValue: [])
+    required List<SupportVectorModel> supportVectors,
     @JsonKey(name: 'legend') LegendModel? legend,
     @JsonKey(name: 'model', defaultValue: '') required String model,
     @JsonKey(name: 'plot_range') PlotRangeModel? plotRange,

@@ -187,6 +187,9 @@ class AppTheme {
           whiteColor: Color(0xFFFFFFFF),
           plotCustomerColor: Color(0xFF0F172A),
           white24Color: Colors.white24,
+          yellowColor: Color(0xFFFFD54F),
+          orangeColor: Color(0xFFFF8A65),
+          purpleColor: Color(0xFFBA68C8),
         ),
       ],
     );

@@ -300,9 +300,7 @@ class _ResultCustomerPredictionState extends State<ResultCustomerPrediction> {
                             titlesData: const FlTitlesData(show: true),
 
                             scatterSpots: [
-                              // =========================
                               // BACKGROUND REGIONS
-                              // =========================
                               ...(plotData?.predictionRegions ?? []).map((e) {
                                 return ScatterSpot(
                                   e.age,
@@ -313,17 +311,17 @@ class _ResultCustomerPredictionState extends State<ResultCustomerPrediction> {
                                     radius: 1.2,
 
                                     color: e.prediction == 1
-                                        ? glass.blueColor.withOpacity(0.50)
-                                        : glass.redAccentColor.withOpacity(
-                                            0.50,
+                                        ? glass.blueColor.withValues(
+                                            alpha: 0.50,
+                                          )
+                                        : glass.redAccentColor.withValues(
+                                            alpha: 0.50,
                                           ),
                                   ),
                                 );
                               }),
 
-                              // =========================
                               // CUSTOMER POINTS
-                              // =========================
                               ...(plotData?.customerPoints ?? []).map((e) {
                                 return ScatterSpot(
                                   e.age,
@@ -339,9 +337,27 @@ class _ResultCustomerPredictionState extends State<ResultCustomerPrediction> {
                                 );
                               }),
 
-                              // =========================
-                              // DECISION BOUNDARY
-                              // =========================
+                              // SUPPORT VECTORS (For SVM)
+                              ...(plotData?.supportVectors ?? []).map((e) {
+                                return ScatterSpot(
+                                  e.age,
+                                  e.estimatedSalary,
+
+                                  dotPainter: FlDotCirclePainter(
+                                    radius: 8,
+
+                                    color: Colors.transparent,
+
+                                    strokeWidth: 2.5,
+
+                                    strokeColor: glass.yellowColor.withValues(
+                                      alpha: 0.60,
+                                    ),
+                                  ),
+                                );
+                              }),
+
+                              // DECISION BOUNDARY (For SVM)
                               ...(plotData?.decisionBoundary ?? []).map((e) {
                                 return ScatterSpot(
                                   e.age,
@@ -350,6 +366,38 @@ class _ResultCustomerPredictionState extends State<ResultCustomerPrediction> {
                                   dotPainter: FlDotCirclePainter(
                                     radius: 2.5,
                                     color: glass.greenAccentColor,
+                                  ),
+                                );
+                              }),
+
+                              // POSITIVE HYPERPLANE (For SVM)
+                              ...(plotData?.positiveHyperplane ?? []).map((e) {
+                                return ScatterSpot(
+                                  e.age,
+                                  e.estimatedSalary,
+
+                                  dotPainter: FlDotCirclePainter(
+                                    radius: 1.5,
+
+                                    color: glass.orangeColor.withValues(
+                                      alpha: .85,
+                                    ),
+                                  ),
+                                );
+                              }),
+
+                              // NEGATIVE HYPERPLANE (For SVM)
+                              ...(plotData?.negativeHyperplane ?? []).map((e) {
+                                return ScatterSpot(
+                                  e.age,
+                                  e.estimatedSalary,
+
+                                  dotPainter: FlDotCirclePainter(
+                                    radius: 1.5,
+
+                                    color: glass.purpleColor.withValues(
+                                      alpha: 0.85,
+                                    ),
                                   ),
                                 );
                               }),
@@ -383,6 +431,32 @@ class _ResultCustomerPredictionState extends State<ResultCustomerPrediction> {
                         _Legend(
                           color: glass.greenAccentColor,
                           text: 'Decision Boundary',
+                        ),
+
+                        Visibility(
+                          visible:
+                              (plotData?.positiveHyperplane ?? []).isNotEmpty,
+                          child: _Legend(
+                            color: glass.orangeColor,
+                            text: 'Positive Hyperplane',
+                          ),
+                        ),
+
+                        Visibility(
+                          visible:
+                              (plotData?.negativeHyperplane ?? []).isNotEmpty,
+                          child: _Legend(
+                            color: glass.purpleColor,
+                            text: 'Negative Hyperplane',
+                          ),
+                        ),
+
+                        Visibility(
+                          visible: (plotData?.supportVectors ?? []).isNotEmpty,
+                          child: _Legend(
+                            color: glass.yellowColor,
+                            text: 'Support Vector',
+                          ),
                         ),
                       ],
                     ),
